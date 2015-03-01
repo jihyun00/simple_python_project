@@ -1,3 +1,4 @@
 dist/
 simple_python_project.egg-info/
 venv/
+simple_python_project/__pycache__/

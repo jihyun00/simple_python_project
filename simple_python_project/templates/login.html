@@ -2,11 +2,13 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Simple Python Project!</title>
+        <title>Login</title>
     </head>
     <body>
-        <label name="email">이메일</label>
-        <input type="text" name="login">
-        <input type="submit" value="로그인">
+        <form action="/login" method="POST" name="login">
+            <label name="email">이메일</label>
+            <input type="text" name="email">
+            <input type="submit" value="로그인">
+        </form>
     </body>
 </html>
