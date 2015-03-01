@@ -2,7 +2,8 @@ import string
 import random
 
 from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy.sql import functions
 from sqlalchemy.ext.declarative import declarative_base
 
 engine = create_engine('sqlite:///test.db', echo=True)
@@ -18,11 +19,11 @@ class User(Base):
     __tablename__ = 'users'
 
     id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False)
+    name = Column(String, nullable=False)
     key = Column(String, nullable=False)
 
-    def __init__(self, email):
-        self.email = email
+    def __init__(self, name):
+        self.name = name
         self.reset_key()
 
     def reset_key(self):
@@ -30,7 +31,8 @@ class User(Base):
         return self.key
 
 
-# class Tag(Base):
-#     __tablename__ = 'tag'
-#
-#     tag = Column(String)
+class Tag():
+    __tablename__ = 'tag'
+
+    tag = Column(String)
+    created_at = Column(DateTime(timezone=True), nullable=False, default=functions.now())

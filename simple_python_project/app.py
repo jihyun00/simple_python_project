@@ -32,15 +32,20 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/tag', methods=['GET', 'POST'])
-def tag():
+@app.route('/tags', methods=['GET', 'POST'])
+def tags():
     if 'key' in session:
         if request.method == 'POST':
-            return redirect(url_for('index'))
+            return redirect(url_for('tags'))
         else:
-            return render_template('login.html')
+            return render_template('tag.html')
     else:
         return redirect(url_for('login'))
+
+
+@app.route('/users/<name>/statistics', methods=['GET'])
+def show_user_tag(name):
+    return 'TAG List %s' % name
 
 
 if __name__ == '__main__':
