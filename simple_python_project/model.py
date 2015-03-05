@@ -1,16 +1,7 @@
 import string
 import random
-
-from sqlalchemy import create_engine
-from sqlalchemy import Column, Integer, String, DateTime
-from sqlalchemy.sql import functions
-from sqlalchemy.ext.declarative import declarative_base
-from db import db
-
-engine = create_engine('sqlite:///test.db', echo=True)
-
-Base = declarative_base()
-Base.metadata.create_all(engine)
+from datetime import datetime
+from .db import db
 
 
 def random_string(size=40, chars=string.ascii_lowercase + string.digits):
@@ -20,9 +11,9 @@ def random_string(size=40, chars=string.ascii_lowercase + string.digits):
 class User(db.Model):
     __tablename__ = 'users'
 
-    id = Column(Integer, primary_key=True)
-    name = Column(String, nullable=False)
-    key = Column(String, nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String, nullable=False)
+    key = db.Column(db.String, nullable=False)
 
     def __init__(self, name):
         self.name = name
@@ -32,14 +23,16 @@ class User(db.Model):
         self.key = random_string(20)
         return self.key
 
+    def __repr__(self):
+        return "<User %r>" % self.name
+
 
 class Tag(db.Model):
     __tablename__ = 'tag'
 
-    id = Column(Integer, primary_key=True)
-    tag = Column(String, nullable=False)
-    created_at = Column(DateTime(timezone=True), nullable=False, default=functions.now())
+    id = db.Column(db.Integer, primary_key=True)
+    tag = db.Column(db.String, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow())
 
     def __init__(self, tag):
         self.tag = tag
-        self.created_at()

@@ -4,3 +4,4 @@ venv/
 simple_python_project/__pycache__/
 .idea/
 build/
+test.db

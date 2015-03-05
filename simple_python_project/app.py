@@ -1,17 +1,22 @@
 from flask import Flask, request, render_template, redirect, url_for, session, abort
 
-from model import User, Tag
-from db import db
+from .model import User, Tag
+from .db import db
+
+
+config = {
+    'SECRET_KEY': 'THIS_IS_SECRET_KEY',
+    'SQLALCHEMY_DATABASE_URI': 'sqlite:///../test.db',
+}
 
 app = Flask(__name__)
+app.config.update(config)
 
-app.secret_key = 'THIS_IS_SECRET_KEY'
-app.config['SESSION_TYPE'] = 'filesystem'
 db.init_app(app)
 
 
 def get_user(user):
-    return db.session.query(User).filter_by(name=user).first()
+    return User.query.filter_by(name=user).first()
 
 
 @app.route('/', methods=['GET'])
@@ -29,17 +34,18 @@ def get_login():
 
 @app.route('/login', methods=['POST'])
 def login():
-    user = request.values.get('email')
+    username = request.values.get('email')
 
-    if user is None:
+    if username is None:
         abort(400)
 
-    if get_user(user) is None:
-        db.session.add(user)
+    if get_user(username) is None:
+        new_user = User(username)
+        db.session.add(new_user)
         db.session.commit()
 
-    # user.key ERROR!
-    session['key'] = user.key
+    # user.key maybe get ERROR!
+    session['key'] = username.key
 
     return redirect(url_for('index'))
 
@@ -63,7 +69,8 @@ def post_tags():
         if tag is None:
             abort(400)
 
-        db.session.add(tag)
+        new_tag = Tag(tag)
+        db.session.add(new_tag)
         db.session.commit()
 
         return redirect(url_for('tags'))
@@ -79,7 +86,3 @@ def show_user_tag(name):
 @app.errorhandler(404)
 def page_not_found(error):
     return render_template('page_not_found.html'), 404
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
