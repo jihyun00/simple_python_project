@@ -43,9 +43,11 @@ def login():
         new_user = User(username)
         db.session.add(new_user)
         db.session.commit()
+        session['key'] = new_user.key
 
-    # user.key maybe get ERROR!
-    session['key'] = username.key
+    else:
+        session['key'] = get_user(username).key
+
 
     return redirect(url_for('index'))
 
