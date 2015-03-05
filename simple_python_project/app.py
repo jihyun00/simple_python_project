@@ -19,6 +19,10 @@ def get_user(user):
     return User.query.filter_by(name=user).first()
 
 
+def get_tag(tag):
+    return Tag.query.filter_by(tag=tag).first()
+
+
 @app.route('/', methods=['GET'])
 def index():
     if 'key' in session:
@@ -66,13 +70,19 @@ def get_tags():
 def post_tags():
     if 'key' in session:
         tag = request.values.get('tag')
+        new_tag = get_tag(tag)
 
         if tag is None:
             abort(400)
 
-        new_tag = Tag(tag)
-        db.session.add(new_tag)
-        db.session.commit()
+        if new_tag is None:
+            new_tag = Tag(tag)
+            db.session.add(new_tag)
+            db.session.commit()
+
+        else:
+            new_tag.count += 1
+            db.session.commit()
 
         return redirect(url_for('get_tags'))
     else:

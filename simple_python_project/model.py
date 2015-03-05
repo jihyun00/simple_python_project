@@ -28,10 +28,11 @@ class User(db.Model):
 
 
 class Tag(db.Model):
-    __tablename__ = 'tag'
+    __tablename__ = 'tags'
 
     id = db.Column(db.Integer, primary_key=True)
     tag = db.Column(db.String, nullable=False)
+    count = db.Column(db.Integer, nullable=False, default=1)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow())
 
     def __init__(self, tag):
