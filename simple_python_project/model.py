@@ -34,5 +34,9 @@ class User(Base):
 class Tag():
     __tablename__ = 'tag'
 
-    tag = Column(String)
+    tag = Column(String, nullable=False)
     created_at = Column(DateTime(timezone=True), nullable=False, default=functions.now())
+
+    def __init__(self, tag):
+        self.tag = tag
+        self.created_at()
