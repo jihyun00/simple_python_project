@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session
+from flask import Flask, request, render_template, redirect, url_for, session, abort
 
 from model import User, Tag
 from db import db
@@ -26,14 +26,19 @@ def index():
 def get_login():
     return render_template('login.html')
 
+
 @app.route('/login', methods=['POST'])
 def login():
-    user = User(request.form['email'])
+    user = request.values.get('email')
+
+    if user is None:
+        abort(400)
 
     if get_user(user) is None:
         db.session.add(user)
         db.session.commit()
 
+    # user.key ERROR!
     session['key'] = user.key
 
     return redirect(url_for('index'))
@@ -53,7 +58,11 @@ def get_tags():
 @app.route('/tags', methods=['POST'])
 def post_tags():
     if 'key' in session:
-        tag = Tag(request.form['tag'])
+        tag = request.values.get('tag')
+
+        if tag is None:
+            abort(400)
+
         db.session.add(tag)
         db.session.commit()
 
@@ -65,6 +74,7 @@ def post_tags():
 @app.route('/users/<name>/statistics', methods=['GET'])
 def show_user_tag(name):
     return 'TAG List %s' % name
+
 
 @app.errorhandler(404)
 def page_not_found(error):
