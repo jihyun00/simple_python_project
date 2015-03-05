@@ -48,7 +48,6 @@ def login():
     else:
         session['key'] = get_user(username).key
 
-
     return redirect(url_for('index'))
 
 
@@ -75,7 +74,7 @@ def post_tags():
         db.session.add(new_tag)
         db.session.commit()
 
-        return redirect(url_for('tags'))
+        return redirect(url_for('get_tags'))
     else:
         return redirect(url_for('login'))
 
