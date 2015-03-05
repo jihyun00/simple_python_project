@@ -22,20 +22,21 @@ def index():
         return redirect(url_for('login'))
 
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET'])
+def get_login():
+    return render_template('login.html')
+
+@app.route('/login', methods=['POST'])
 def login():
-    if request.method == 'POST':
-        user = User(request.form['email'])
+    user = User(request.form['email'])
 
-        if get_user(user) is None:
-            db.session.add(user)
-            db.session.commit()
+    if get_user(user) is None:
+        db.session.add(user)
+        db.session.commit()
 
-        session['key'] = user.key
+    session['key'] = user.key
 
-        return redirect(url_for('index'))
-    else:
-        return render_template('login.html')
+    return redirect(url_for('index'))
 
 
 @app.route('/logout', methods=['GET'])
@@ -44,17 +45,19 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/tags', methods=['GET', 'POST'])
-def tags():
-    if 'key' in session:
-        if request.method == 'POST':
-            tag = Tag(request.form['tag'])
-            db.session.add(tag)
-            db.session.commit()
+@app.route('/tags', methods=['GET'])
+def get_tags():
+    return render_template('tag.html')
 
-            return redirect(url_for('tags'))
-        else:
-            return render_template('tag.html')
+
+@app.route('/tags', methods=['POST'])
+def post_tags():
+    if 'key' in session:
+        tag = Tag(request.form['tag'])
+        db.session.add(tag)
+        db.session.commit()
+
+        return redirect(url_for('tags'))
     else:
         return redirect(url_for('login'))
 
