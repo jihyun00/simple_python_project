@@ -9,5 +9,4 @@ def login_required(f):
             return f(*args, **kwargs)
         else:
             return redirect(url_for('get_login'))
-        return f(*args, **kwargs)
     return decorated_function
