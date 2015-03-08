@@ -87,6 +87,8 @@ def post_tags():
             new_tag.count += 1
             db.session.commit()
 
+        #username 다를 때는 하나 더 만들기
+
         return redirect(url_for('get_tags'))
     else:
         return redirect(url_for('login'))
