@@ -47,9 +47,11 @@ def login():
         new_user = User(username)
         db.session.add(new_user)
         db.session.commit()
+        session['username'] = new_user.name
         session['key'] = new_user.key
 
     else:
+        session['username'] = username
         session['key'] = get_user(username).key
 
     return redirect(url_for('index'))
@@ -70,13 +72,14 @@ def get_tags():
 def post_tags():
     if 'key' in session:
         tag = request.values.get('tag')
+        username = session['username']
         new_tag = get_tag(tag)
 
         if tag is None:
             abort(400)
 
         if new_tag is None:
-            new_tag = Tag(tag)
+            new_tag = Tag(tag, username)
             db.session.add(new_tag)
             db.session.commit()
 
@@ -90,8 +93,11 @@ def post_tags():
 
 
 @app.route('/users/<name>/statistics', methods=['GET'])
-def show_user_tag(name):
-    return 'TAG List %s' % name
+def show_user_tag(name=None):
+    tags = Tag.query.filter_by(username=name).all()
+
+    return render_template('statistics.html', tags=tags)
+
 
 
 @app.errorhandler(404)

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Statistics</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <th>태그명</th>
+                <th>횟수</th>
+                <th>시간</th>
+            </tr>
+            {% for tag in tags %}
+                <tr>
+                    <td>{{ tag.tag }}</td>
+                    <td>{{ tag.count }}</td>
+                    <td>{{ tag.created_at }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>

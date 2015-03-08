@@ -34,6 +34,8 @@ class Tag(db.Model):
     tag = db.Column(db.String, nullable=False)
     count = db.Column(db.Integer, nullable=False, default=1)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow())
+    username = db.Column(db.String, db.ForeignKey('users.name'))
 
-    def __init__(self, tag):
+    def __init__(self, tag, username):
         self.tag = tag
+        self.username = username
