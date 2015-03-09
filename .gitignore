@@ -5,3 +5,4 @@ simple_python_project/__pycache__/
 .idea/
 build/
 test.db
+simple_python_project/alembic/versions/__pycache__/
