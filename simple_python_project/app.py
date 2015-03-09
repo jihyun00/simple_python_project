@@ -20,10 +20,6 @@ def get_user(user):
     return User.query.filter_by(name=user).first()
 
 
-def get_tag(tag):
-    return Tag.query.filter_by(tag=tag).first()
-
-
 @app.route('/', methods=['GET'])
 @login_required
 def index():
@@ -75,21 +71,13 @@ def get_tags():
 def post_tags():
     tag = request.values.get('tag')
     username = session['username']
-    new_tag = get_tag(tag)
 
     if tag is None:
         abort(400)
 
-    if new_tag is None:
-        new_tag = Tag(tag, username)
-        db.session.add(new_tag)
-        db.session.commit()
-
-    else:
-        new_tag.count += 1
-        db.session.commit()
-
-    #username 다를 때는 하나 더 만들기
+    new_tag = Tag(tag, username)
+    db.session.add(new_tag)
+    db.session.commit()
 
     return redirect(url_for('get_tags'))
 
@@ -97,6 +85,7 @@ def post_tags():
 @app.route('/users/<name>/statistics', methods=['GET'])
 def show_user_tag(name=None):
     tags = Tag.query.filter_by(username=name).all()
+    # count = db.query(User.group, db.label('members', db.func.count(User.id)), db.label('total_balance', db.func.sum(User.balance))).group_by(User.group).all()
 
     return render_template('statistics.html', tags=tags)
 
