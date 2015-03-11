@@ -39,7 +39,7 @@ def login():
         abort(400)
 
     if get_user(username) is None:
-        new_user = User(username)
+        new_user = User(name=username)
         db.session.add(new_user)
         db.session.commit()
         session['username'] = new_user.name
@@ -75,7 +75,7 @@ def post_tags():
     if tag is None:
         abort(400)
 
-    new_tag = Tag(tag, username)
+    new_tag = Tag(tag=tag, username=username)
     db.session.add(new_tag)
     db.session.commit()
 

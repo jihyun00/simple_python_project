@@ -15,11 +15,8 @@ class User(db.Model):
     name = db.Column(db.String, nullable=False)
     key = db.Column(db.String, nullable=False, default=random_string(20))
 
-    def __init__(self, name):
-        self.name = name
-
     def __repr__(self):
-        return "<User %r>" % self.name
+        return "<User(name='%s')>" % self.name
 
 
 class Tag(db.Model):
@@ -30,6 +27,5 @@ class Tag(db.Model):
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=datetime.utcnow())
     username = db.Column(db.String, db.ForeignKey('users.id'))
 
-    def __init__(self, tag, username):
-        self.tag = tag
-        self.username = username
+    def __repr__(self):
+        return "<Tag(tag='%s', username='%s')>" % (self.tag, self.username)
