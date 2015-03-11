@@ -84,10 +84,12 @@ def post_tags():
 
 @app.route('/users/<name>/statistics', methods=['GET'])
 def show_user_tag(name=None):
-    tags = Tag.query.filter_by(username=name).all()
-    # count = db.query(User.group, db.label('members', db.func.count(User.id)), db.label('total_balance', db.func.sum(User.balance))).group_by(User.group).all()
+    result = db.session.query(Tag.tag, db.func.count(Tag.tag).label('count'),
+                              db.func.max(Tag.created_at).label('created_at'))\
+        .group_by(Tag.tag).filter_by(username=name)\
+        .order_by(Tag.tag).all()
 
-    return render_template('statistics.html', tags=tags)
+    return render_template('statistics.html', tags=result)
 
 
 
