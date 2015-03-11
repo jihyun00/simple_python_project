@@ -19,11 +19,10 @@ import sqlalchemy as sa
 def upgrade():
     op.create_table(
         'tags',
-        sa.Column('id', sa.Integer, nullable=False),
+        sa.Column('id', sa.Integer, primary_key=False),
         sa.Column('tag', sa.String, nullable=False),
         sa.Column('created_at', sa.DateTime, nullable=False),
         sa.Column('username', sa.String, nullable=False),
-        sa.PrimaryKeyConstraint('id')
     )
 
 

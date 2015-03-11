@@ -86,7 +86,8 @@ def post_tags():
 def show_user_tag(name=None):
     result = db.session.query(Tag.tag, db.func.count(Tag.tag).label('count'),
                               db.func.max(Tag.created_at).label('created_at'))\
-        .group_by(Tag.tag).filter_by(username=name)\
+        .group_by(Tag.tag)\
+        .filter_by(username=name)\
         .order_by(Tag.tag).all()
 
     return render_template('statistics.html', tags=result)

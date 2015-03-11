@@ -1,7 +1,7 @@
 from .db import db
 
 
-class BaseMixin(object):
+class BaseMixin:
 
     id = db.Column(db.Integer, primary_key=True)
 
