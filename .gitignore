@@ -6,3 +6,4 @@ simple_python_project/__pycache__/
 build/
 test.db
 simple_python_project/alembic/versions/__pycache__/
+alembic/__pycache__/
